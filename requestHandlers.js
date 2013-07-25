@@ -79,6 +79,18 @@ function show (response, request) {
     console.log("a fost activat 'muje'");
    imagine= qs.parse(url.parse(request.url).query).query
     console.log(imagine);
+
+   delete_all_='<!DOCTYPE html PUBLIC>'+
+       '<head>'+
+       '<body>'+
+       '<form id = "form1" action= "sterge" method="post" name="form1">'+
+       '<input id="delete_all" type="submit" value="Delete_all" name="delete_all"></input>'+
+       '</form>'+
+       '</body>'+
+       '</html>';
+
+
+
     //    var image = qs.parse( url.parse( request.url ).query ).i; // Parse out the query string variable
    image = ("depozit/"+imagine);
     if( !image ) { // Make sure we have a value
@@ -118,17 +130,39 @@ function show (response, request) {
 
 	    type = mime.lookup( file );
 	    console.log (type);
-	    response.writeHead( 200, { "Content-Type" : "image/jpg" } );
-	    response.write (file, "binary");
+	    response.writeHead( 200, { "Content-Type" :"text/html" } );
+	    response.write (delete_all_);
 	    response.end();
 
 	});
 
 };
 
+function sterge(response, request) {
+    exec ('rm depozit/*');
+    response.writeHead( 200, { "Content-Type" : "text/html" } );
 
+    response.write(   '<html>'+
+                              '<head>'+
+                              '<meta http-equiv="Content-Type" '+
+                              'content="text/html; charset=UTF-8" />'+
+                              '</head>'+
+                              '<body>'+
+                              '<p>'+'toate fisierele au fost sterse'+ '</p>'+
+                              '<form method="link" action="/start">'+
+                              '<input type="submit" value="Load another?">'+
+                              '</form>'+
+                              '</body>'+
+                              '</html>'
+		      );
+    response.end();
+
+
+
+};
 
 
 exports.start=start;
 exports.upload=upload;
 exports.show=show;
+exports.sterge=sterge;

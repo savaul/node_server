@@ -1,5 +1,4 @@
 
-
 function route(handle, pathname, response, postData) {
     console.log(pathname + " de routat");
 
