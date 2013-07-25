@@ -1,0 +1,6 @@
+#!/bin/bash
+rm -rf html.txt
+while read line
+do 
+echo  "<p> <a href='$line'> "$line" </a></p>"|cat>>html.txt
+done<listing.txt 

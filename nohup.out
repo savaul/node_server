@@ -1,0 +1,22 @@
+serverul merge
+serverul merge
+am primit o cerere
+GET
+/start de routat
+a fost activat 'start'
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /></head><body><form action="/upload" method="post"><textarea name="text" rows="20" cols="60"></textarea><input type="submit" value="Submit text" /></form></body></html>
+am primit o cerere
+POST
+/upload de routat
+a fost activat 'upload'
+upload
+am primit o cerere
+GET
+/start de routat
+a fost activat 'start'
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /></head><body><form action="/upload" method="post"><textarea name="text" rows="20" cols="60"></textarea><input type="submit" value="Submit text" /></form></body></html>
+am primit o cerere
+POST
+/upload de routat
+a fost activat 'upload'
+upload

@@ -1,0 +1,110 @@
+var url = require("url");
+var qs = require("querystring");
+fs = require ("fs");
+formidable = require("formidable");
+mime = require("mime");
+var exec = require("child_process").exec;
+var body = '<html>'+
+'<head>'+
+'<meta http-equiv="Content-Type" '+
+'content="text/html; charset=UTF-8" />'+
+'</head>'+
+'<body>'+
+'<form action="/upload" enctype="multipart/form-data" '+
+'method="post">'+
+'<input type="file" name="upload">'+
+'<input type="submit" value="Upload file" />'+
+'</form>'+
+'</body>'+
+    '</html>';
+
+
+function start(response, request) {
+    console.log("Request handler 'start' was called.");
+
+	    response.writeHead(200, {"Content-Type": "text/html"});
+	    response.write(body);
+	    response.end();
+}
+
+
+function upload (response, request) {
+    console.log("a fost activat 'upload'");
+    var form = new formidable.IncomingForm();
+    console.log("uploading");
+    form.parse(request, function(error, fields, files) {
+	    console.log ("parsed");
+
+	    if (error) {
+		response.writeHead (500, {"Content-Type": "text/plain"});
+		response.end ("eroororr" + error+"/n");
+		return;
+	    }
+
+	   exec("ls -1 depozit", function (error, stdout, stdin) {
+		    content = stdout;
+		    response.writeHead( 200, { "Content-Type" : "text/html" } );
+
+		    response.write(   '<html>'+
+                              '<head>'+
+                              '<meta http-equiv="Content-Type" '+
+                              'content="text/html; charset=UTF-8" />'+
+                              '</head>'+
+                              '<body>'+
+                              '<p>'+'received image'+ '</p>'+
+				      '<p>'+content+ '</p>'+                            
+			      '<form method="link" action="/show">'+
+                              '<input type="submit" value="Shou">'+
+                              '</form>'+
+                              '</body>'+
+                              '</html>'
+				      );
+		    response.end();
+		    console.log(content);
+
+	       });
+	    fs.renameSync( files.upload.path, "depozit/" + files.upload.name ); // Update the streamed filename with it's original filename
+
+	    image = ("depozit/"+files.upload.name);
+
+	});
+};
+
+
+function show (response) {
+    console.log("a fost activat 'muje'");
+
+    //    console.log(qs.parse(url.parse(request.url).query).i);
+    //    var image = qs.parse( url.parse( request.url ).query ).i; // Parse out the query string variable
+    console.log(image);
+    if( !image ) { // Make sure we have a value
+        response.writeHead( 500, { "Content-Type" : "text/plain" } );
+        response.end( " No Image in QueryString ");
+        return;
+    }
+
+    fs.readFile( image, "binary", function( error, file ) {
+	    var type = "";
+
+	    if( error ){
+		response.writeHead( 500, { "Content-Type" : "text/plain" } );
+		response.end( error + "\n" );
+		return;
+	    }
+                
+	    type = mime.lookup( file );
+	    console.log (type);
+	    response.writeHead( 200, { "Content-Type" : "image/jpg" } );
+	    response.write (file, "binary");
+	    response.end();
+
+	});
+
+};
+
+
+
+
+exports.start=start;
+exports.upload=upload;
+exports.show=show;
