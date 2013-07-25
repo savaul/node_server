@@ -139,25 +139,20 @@ function show (response, request) {
 };
 
 function sterge(response, request) {
-    exec ('rm depozit/*');
-    response.writeHead( 200, { "Content-Type" : "text/html" } );
-
-    response.write(   '<html>'+
-                              '<head>'+
-                              '<meta http-equiv="Content-Type" '+
-                              'content="text/html; charset=UTF-8" />'+
-                              '</head>'+
-                              '<body>'+
-                              '<p>'+'toate fisierele au fost sterse'+ '</p>'+
-                              '<form method="link" action="/start">'+
-                              '<input type="submit" value="Load another?">'+
-                              '</form>'+
-                              '</body>'+
-                              '</html>'
-		      );
-    response.end();
+    //    exec ('rm depozit/*');
+    
+    image = ("depozit/pulpit.jpg");
 
 
+    var base64_data= fs.readFileSync(image).toString('base64');
+    //    console.log('<img alt="sample" src="data:image/png;base64,' + base64_data + '">');
+	
+
+	    response.writeHead(200, {'Content-Type': 'text/html'});
+	    response.write('<html><body><img alt = "sample" src= "data:image/jpg;base64,'+base64_data+'"></body></html>');
+	    response.end();
+
+       
 
 };
 
